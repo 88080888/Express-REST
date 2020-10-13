@@ -29,7 +29,7 @@ router.route('/concerts/:id').put((req, res) => {
 });
 
 router.route('/concerts/:id').delete((req, res) => {
-  db = db.concerts.filter((item) => item.id != req.params.id);
+  db.concerts = db.concerts.filter((item) => item.id != req.params.id);
   res.json({ message: 'OK' });
 });
 

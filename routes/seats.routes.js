@@ -12,9 +12,23 @@ router.route('/seats/:id').get((req, res) => {
 
 router.route('/seats').post((req, res) => {
   const { day, seat, client, email } = req.body;
-  const id = Math.floor(Math.random()*100 + 1);
-  db.seats.push({ id, day, seat, client, email });
-  res.json({ message: 'OK' });
+  const payload = {
+    id: Math.floor(Math.random()*100 + 1),
+    day: day,
+    seat: seat,
+    client: client,
+    email: email,
+  }
+
+  if (db.seats.some(item => (item.seat === payload.seat && item.day ===payload.day))) {
+    res.json({message: 'The slot is already taken'})
+  }
+  else {
+    db.seats.push(payload);
+    res.json({ message: 'OK' });
+  }
+
+
 });
 
 router.route('/seats/:id').put((req, res) => {
@@ -28,7 +42,7 @@ router.route('/seats/:id').put((req, res) => {
 });
 
 router.route('/seats/:id').delete((req, res) => {
-  db = db.seats.filter((item) => item.id != req.params.id);
+  db.seats = db.seats.filter((item) => item.id != req.params.id);
   res.json({ message: 'OK' });
 });
 

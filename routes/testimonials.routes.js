@@ -30,7 +30,7 @@ router.route('/testimonials/:id').put((req, res) => {
 });
 
 router.route('/testimonials/:id').delete((req, res) => {
-  db = db.testimonials.filter((item) => item.id != req.params.id);
+  db.testimonials = db.testimonials.filter((item) => item.id != req.params.id);
   res.json({ message: 'OK' });
 });
 

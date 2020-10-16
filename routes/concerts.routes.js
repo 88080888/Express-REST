@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('./../db');
+const { v4: uuidv4 } = require('uuid');
 
 router.route('/concerts').get((req, res) => {
   res.json(db.concerts);
@@ -12,7 +13,7 @@ router.route('/concerts/:id').get((req, res) => {
 
 router.route('/concerts').post((req, res) => {
   const { performer, genre, price, day, image } = req.body;
-  const id = Math.floor(Math.random()*100 + 1);
+  id = uuidv4();
   db.concerts.push({ id, performer, genre, price, day, image });
   res.json({ message: 'OK' });
 });

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('./../db');
+const { v4: uuidv4 } = require('uuid');
 
 router.route('/seats').get((req, res) => {
   res.json(db.seats);
@@ -13,7 +14,7 @@ router.route('/seats/:id').get((req, res) => {
 router.route('/seats').post((req, res) => {
   const { day, seat, client, email } = req.body;
   const payload = {
-    id: Math.floor(Math.random()*100 + 1),
+    id: uuidv4(),
     day: day,
     seat: seat,
     client: client,

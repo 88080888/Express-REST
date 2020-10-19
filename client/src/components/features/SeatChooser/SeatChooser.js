@@ -5,6 +5,10 @@ import io from 'socket.io-client';
 import './SeatChooser.scss';
 
 class SeatChooser extends React.Component {
+
+  state = {
+    allSeats: 50,
+  };
   
   componentDidMount() {
     this.socket = io.connect('http://localhost:8000/');
@@ -19,6 +23,16 @@ class SeatChooser extends React.Component {
 
   componentWillUnmount() {
     clearInterval(this.time);
+  }
+
+  getFreeSeats = () => {
+    const { seats, chosenDay } = this.props;
+    const { allSeats } = this.state;
+    const takenSeats = seats.filter(seat => {return seat.day === chosenDay});
+
+    let freeSeats = allSeats - takenSeats.length;
+
+    return freeSeats;
   }
 
   isTaken = (seatId) => {
@@ -37,7 +51,7 @@ class SeatChooser extends React.Component {
   }
 
   render() {
-
+    const { allSeats } = this.state;
     const { prepareSeat } = this;
     const { requests } = this.props;
 
@@ -49,6 +63,7 @@ class SeatChooser extends React.Component {
         { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].success) && <div className="seats">{[...Array(50)].map((x, i) => prepareSeat(i+1) )}</div>}
         { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].pending) && <Progress animated color="primary" value={50} /> }
         { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].error) && <Alert color="warning">Couldn't load seats...</Alert> }
+        <p className="free-seats">Free seats: {`${this.getFreeSeats()}/${allSeats}`}</p>
       </div>
     )
   };

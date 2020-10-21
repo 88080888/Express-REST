@@ -10,7 +10,7 @@ const concertsRoute = require('./routes/concerts.routes');
 const testimonialsRoute = require('./routes/testimonials.routes');
 
 // connects our backend code with the database
-mongoose.connect('mongodb://localhost:27017/companyDB', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/NewWaveDB', { useNewUrlParser: true });
 const db = mongoose.connection;
 
 db.once('open', () => {

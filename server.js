@@ -3,10 +3,21 @@ const cors = require('cors');
 const path = require('path');
 const socket = require('socket.io');
 const app = express();
+const mongoose = require('mongoose');
 
 const seatsRoute = require('./routes/seats.routes');
 const concertsRoute = require('./routes/concerts.routes');
 const testimonialsRoute = require('./routes/testimonials.routes');
+
+// connects our backend code with the database
+mongoose.connect('mongodb://localhost:27017/companyDB', { useNewUrlParser: true });
+const db = mongoose.connection;
+
+db.once('open', () => {
+  console.log('Connected to the database');
+});
+db.on('error', err => console.log('Error ' + err));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
